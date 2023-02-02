@@ -1,0 +1,70 @@
+﻿@{
+    var name = SignalRDemo.Comm.UserTool.GetName(2);
+}
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无痕聊天室</title>
+</head>
+<body style="margin: 0;width: 100vw;height: 100vh;display: flex;flex-direction: column;justify-content: space-between;">
+    <div style="overflow-y: scroll;" id="messagesDiv">
+        <ul id="messagesList">
+            <li>系统：欢迎来到无痕聊天室，祝您玩的愉快！</li>
+        </ul>
+    </div>
+    <div style="display: flex;flex-direction: row;">
+        <img src="@Url.Action("GetAvatar","Home")?name=@name" style="border-radius: 50%;margin: 5px;width: 50px;height: 50px;" />
+        <div style="display: flex;flex-direction: column;justify-content: center;width: 100%;">
+            <label>@name</label>
+            <textarea type="text" id="messageInput" style="height: 50px;"></textarea>
+        </div>
+        <input type="button" id="sendButton" value="发送" style="margin: 5px;" />
+    </div>
+    <script src="~/js/signalr/signalr.js"></script>
+    <script>
+        //建立连接
+        var connection = new signalR.HubConnectionBuilder().withUrl('/chatHub').build();
+        document.getElementById('sendButton').disabled = true;
+        connection.start().then(function () {
+            document.getElementById('sendButton').disabled = false;
+            //系统消息
+            connection.invoke('SendMessage', '系统', '欢迎 @Html.Raw(name) 加入聊天室！')
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+        //发送消息
+        document.getElementById('sendButton').addEventListener('click', function (event) {
+            var user = '@Html.Raw(name)';
+            var message = document.getElementById('messageInput').value;
+            if (message == '') return;
+            connection.invoke('SendMessage', user, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+        //接受消息
+        connection.on('ReceiveMessage', function (user, message) {
+            var li = document.createElement('li');
+            if (user == '@Html.Raw(name)') user = `(我)${user}`;
+            document.getElementById('messagesList').appendChild(li);
+            li.textContent = `${user}：${message}`;
+        });
+        //回车事件
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                document.getElementById('sendButton').click();
+                document.getElementById('messageInput').value = '';
+                //滚到底部
+                var message = document.getElementById('messagesDiv');
+                message.scrollTop = message.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
