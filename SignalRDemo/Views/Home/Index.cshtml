@@ -10,14 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>无痕聊天室</title>
 </head>
-<body style="margin: 0;width: 100vw;height: 100vh;display: flex;flex-direction: column;justify-content: space-between;">
+<body style="padding: 10px;margin: 0;width: calc(100vw - 20px);height: calc(100vh - 20px);display: flex;flex-direction: column;justify-content: space-between;">
     <div style="overflow-y: scroll;" id="messagesDiv">
         <ul id="messagesList">
             <li>系统：欢迎来到无痕聊天室，祝您玩的愉快！</li>
         </ul>
     </div>
     <div style="display: flex;flex-direction: row;">
-        <img src="@Url.Action("GetAvatar","Home")?name=@name" style="border-radius: 50%;margin: 5px;width: 50px;height: 50px;" />
         <div style="display: flex;flex-direction: column;justify-content: center;width: 100%;">
             <label>@name</label>
             <textarea type="text" id="messageInput" style="height: 50px;"></textarea>

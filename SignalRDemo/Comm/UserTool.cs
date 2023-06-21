@@ -1,5 +1,4 @@
-﻿using SkiaSharp;
-using System.Text;
+﻿using System.Text;
 
 namespace SignalRDemo.Comm
 {
@@ -51,39 +50,39 @@ namespace SignalRDemo.Comm
             return chineseWords;
         }
 
-        /// <summary>
-        /// 生成图片
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static byte[] GetImage(string name)
-        {
-            var random = new Random();
-            //颜色集合
-            var colors = new[] { SKColors.Black, SKColors.Red, SKColors.Green, SKColors.Orange, SKColors.Brown, SKColors.DarkCyan, SKColors.Purple };
-            //相当于js的 canvas.getContext('2d')
-            using var image2d = new SKBitmap(50, 50, SKColorType.Bgra8888, SKAlphaType.Premul);
-            //相当于前端的canvas
-            using var canvas = new SKCanvas(image2d);
-            //填充白色背景
-            canvas.DrawColor(colors[random.Next(0, colors.Length - 1)]);
-            //样式 跟xaml差不多
-            using var drawStyle = new SKPaint();
-            //样式
-            drawStyle.IsAntialias = true;
-            drawStyle.TextSize = 32;
-            drawStyle.Typeface = SKTypeface.FromFamilyName("微软雅黑", SKFontStyleWeight.SemiBold, SKFontStyleWidth.ExtraCondensed, SKFontStyleSlant.Upright);
-            drawStyle.Color = SKColors.White;
-            //写字
-            canvas.DrawText(name, 10, 35, drawStyle);
-            //创建对象信息
-            using var img = SKImage.FromBitmap(image2d);
-            using var p = img.Encode(SKEncodedImageFormat.Png, 100);
-            using var ms = new MemoryStream();
-            //保存到流
-            p.SaveTo(ms);
-            var bytes = ms.GetBuffer();
-            return bytes;
-        }
+        ///// <summary>
+        ///// 生成图片
+        ///// </summary>
+        ///// <param name="name"></param>
+        ///// <returns></returns>
+        //public static byte[] GetImage(string name)
+        //{
+        //    var random = new Random();
+        //    //颜色集合
+        //    var colors = new[] { SKColors.Black, SKColors.Red, SKColors.Green, SKColors.Orange, SKColors.Brown, SKColors.DarkCyan, SKColors.Purple };
+        //    //相当于js的 canvas.getContext('2d')
+        //    using var image2d = new SKBitmap(50, 50, SKColorType.Bgra8888, SKAlphaType.Premul);
+        //    //相当于前端的canvas
+        //    using var canvas = new SKCanvas(image2d);
+        //    //填充白色背景
+        //    canvas.DrawColor(colors[random.Next(0, colors.Length - 1)]);
+        //    //样式 跟xaml差不多
+        //    using var drawStyle = new SKPaint();
+        //    //样式
+        //    drawStyle.IsAntialias = true;
+        //    drawStyle.TextSize = 32;
+        //    drawStyle.Typeface = SKTypeface.FromFamilyName("微软雅黑", SKFontStyleWeight.SemiBold, SKFontStyleWidth.ExtraCondensed, SKFontStyleSlant.Upright);
+        //    drawStyle.Color = SKColors.White;
+        //    //写字
+        //    canvas.DrawText(name, 10, 35, drawStyle);
+        //    //创建对象信息
+        //    using var img = SKImage.FromBitmap(image2d);
+        //    using var p = img.Encode(SKEncodedImageFormat.Png, 100);
+        //    using var ms = new MemoryStream();
+        //    //保存到流
+        //    p.SaveTo(ms);
+        //    var bytes = ms.GetBuffer();
+        //    return bytes;
+        //}
     }
 }

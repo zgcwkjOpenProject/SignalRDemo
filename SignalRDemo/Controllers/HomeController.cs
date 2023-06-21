@@ -23,12 +23,5 @@ namespace SignalRDemo.Controllers
             await _hubContext.Clients.All.SendAsync("ReceiveMessage", msg);
             return Json("ok");
         }
-
-        public IActionResult GetAvatar(string name)
-        {
-            if (string.IsNullOrEmpty(name)) name = "雅";
-            name = name.Substring(0,1);
-            return File(Comm.UserTool.GetImage(name), "image/jpg");
-        }
     }
 }
